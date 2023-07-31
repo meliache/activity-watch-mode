@@ -75,7 +75,7 @@
   :type 'string
   :group 'activity-watch)
 
-(defcustom activity-watch-project-name-resolvers '(projectile magit-dir-force magit-origin)
+(defcustom activity-watch-project-name-resolvers '(projectile project magit-dir-force magit-origin)
   "List of resolvers used to find the project name.
 
 When determining the name of a project, the watcher will go down the list
@@ -143,6 +143,10 @@ and when it is, use it to find the project's name." docstring)
 use it to find the project's name." docstring)
          (when (require ,feature nil t)
            ,@body)))))
+
+(activity-watch--gen-feature-resolver 'project project
+  (when (project-current)
+    (project-name (project-current))))
 
 (activity-watch--gen-feature-resolver 'projectile projectile
   (when (projectile-project-p)
