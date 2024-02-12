@@ -243,7 +243,10 @@ Argument TIME time at which the heartbeat was computed."
   (activity-watch--create-bucket)
   (let ((now (float-time))
         (current-file-path (buffer-file-name (current-buffer)))
-        (time-delta (+ (or activity-watch-last-heartbeat-time 0) activity-watch-max-heartbeat-per-sec)))
+        (time-delta (+ (or activity-watch-last-heartbeat-time 0) activity-watch-max-heartbeat-per-sec))
+		(coding-system-for-read
+		 (unless (eq coding-system-for-read 'auto-save-coding)
+		   coding-system-for-read)))
     (if (or (not (string= (or activity-watch-last-file-path "") current-file-path))
             (< time-delta now))
         (progn
